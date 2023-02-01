@@ -41,6 +41,14 @@ html {
     display: flex;
     justify-content: space-around;
 }
+.yes, .no, .remove {
+    padding: 2px 5px;
+    border-radius: 10px;
+    border: .5;
+}
+.yes, .no {
+    color: whitesmoke
+}
 
 .yes {
     background-color: green;
@@ -50,6 +58,10 @@ html {
 .no {
     background-color: red;
     margin-left: 20px;
+}
+
+.remove {
+
 }
 
 .sidebar {
@@ -137,7 +149,6 @@ html {
     flex-direction: column;
     align-items: left;
     justify-content: space-between;
-  
     margin: 10%;
 }
 

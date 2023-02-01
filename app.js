@@ -4,34 +4,36 @@ const newButton = document.getElementById('addNew')
 const form = document.getElementById('bookForm')
 form.style.display = 'none'
 newButton.addEventListener("click", addNew);
-let titleEntry = document.getElementById('title')
-let authorEntry =  document.getElementById('author')
-let pagesEntry = document.getElementById('pages')
-let readEntry = document.getElementById('read')
 const submit = document.getElementById('submit')
 submit.addEventListener("click", submitForm)
+let bookCounter = 1
 
 function submitForm() {
     
     let titleEntry = document.getElementById('title').value
     let authorEntry =  document.getElementById('author').value
     let pagesEntry = document.getElementById('pages').value
-    let readEntry = document.getElementById('read').value
+    let readEntry = document.getElementById('read').checked
     let book = new Book(titleEntry, authorEntry, pagesEntry, readEntry)
     addBookToLibrary(book);
     form.style.display = 'none'
-    titleEntry.textContent = ""
-    authorEntry.textContent = ""
-    pagesEntry.textContent = ""
-    readEntry.textContent = ""
+    console.log(myLibrary)
 }
 
 function addNew(){
     form.style.display = 'inline-block'
+    document.getElementById('title').value = ''
+    document.getElementById('author').value = ''
+    document.getElementById('pages').value = ''
+    
+    
+
 }
 
 function Book(title, author, pages, read){
     
+    this.key = bookCounter
+    bookCounter++
     this.title = title;
     this.author = author;
     this.pages = pages;
@@ -46,8 +48,7 @@ function addBookToLibrary(x){
     myLibrary.push(x);
     let book = document.createElement('div')
         book.classList.add('bookcard')
-        book.dataset.book = myLibrary.length 
-        console.log(typeof book.dataset.book)
+        book.dataset.book = x.key 
         let title = document.createElement('h4')
         let author = document.createElement('p')
         let pages = document.createElement('p')
@@ -56,11 +57,16 @@ function addBookToLibrary(x){
         let readTitle = document.createElement('p')
         let readButton = document.createElement('button')
         let del = document.createElement('button')
-        del.textContent = 'Remove'
-        let datanum = myLibrary.length 
-        del.dataset.number = datanum
+        del.textContent = 'Remove' 
+        del.classList.add('remove')
+        del.dataset.number = x.key
         del.addEventListener("click", function(e){
-            const dele = document.querySelector('[data-book="' + datanum + '"]')
+            const dele = document.querySelector('[data-book="' + x.key + '"]')
+            for (let i in myLibrary) {
+                if (myLibrary[i].key === x.key) {
+                    myLibrary.splice(i, 1)
+                }
+            }       
             dele.remove();
         })
         title.textContent = 'Title:  ' + x.title
@@ -74,6 +80,21 @@ function addBookToLibrary(x){
             readButton.textContent = 'no'
             readButton.classList.add('no')
         }
+
+        readButton.addEventListener("click", function(e){
+            if(x.read === true) {
+                x.read = false;
+                readButton.textContent = 'no'
+                readButton.classList.add('no')
+                readButton.classList.remove('yes')
+            } else {
+                x.read = true;
+                readButton.textContent = 'Yes'
+                readButton.classList.add('yes')
+                readButton.classList.remove('no')
+            }
+            console.log(x.read)
+        })
         
         read.appendChild(readTitle)
         read.appendChild(readButton)
